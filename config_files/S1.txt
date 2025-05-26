@@ -1,0 +1,38 @@
+en
+conf t
+no ip domain lookup
+hostname A-S1
+ip domain-name net31.pwr
+
+enable secret cisco
+line console 0
+password ciscoconpass
+login
+
+interface range f0/1-5,f0/7-19,f0/21-24,g0/0-1
+shutdown
+exit
+
+username admin secret admin1pass
+
+line vty 0 15
+login local
+transport input ssh 
+
+service password-encryption
+
+banner motd #Nieautoryzowany dostep zabroniony#
+
+crypto key generate rsa general-keys modulus 1024
+
+int vlan 1
+ip address 172.21.1.2 255.255.255.0
+description Management
+exit 
+
+ip default-gateway 172.21.1.1
+
+int vlan 1
+no ip address 172.21.1.2 255.255.255.0
+ip add 192.192.1.10
+

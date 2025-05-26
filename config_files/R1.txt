@@ -1,0 +1,62 @@
+en
+conf t
+no ip domain lookup
+hostname A-R1
+ip domain-name net31.pwr
+
+enable secret ciscoenpass
+line console 0
+password ciscoconpass
+login
+exit
+
+security min-length 10
+username admin secret admin1pass
+
+line vty 0 15
+logging local
+transport input ssh
+exit
+service password-encryption
+banner motd #Nieautoryzowany dostep zabroniony#
+
+interface g0/0/1
+ip add 10.21.1.9 255.255.255.252
+no shutdown
+
+int g0/0/0
+ip add 172.21.1.1 255.255.255.0
+no shutdown
+
+int s0/1/0
+ip add 10.21.1.1 255.255.255.252
+clock rate 2000000
+no shutdown
+
+crypto key generate rsa general-keys modulus 1024
+
+router ospf 1
+router-id 223.21.1.1
+network 10.21.1.8 0.0.0.3 area 0
+network 172.21.1.0 0.0.0.255 area 0
+network 10.21.1.0 0.0.0.3 area 0
+
+passive-interface g0/0/0
+auto-cost reference-bandwidth 1000
+
+exit
+
+interface g0/0/1
+ip ospf hello-interval 30
+interface s0/1/0
+ip ospf hello-interval 30
+
+router ospf 1
+no network 172.21.1.0 0.0.0.255 area 0
+network 192.192.1.0 0.0.0.255 area 0
+exit
+
+int g0/1/0
+no ip add 172.21.1.1 255.255.255.0
+ip add 192.192.1.1 255.255.255.0
+

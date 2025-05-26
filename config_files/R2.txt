@@ -1,0 +1,79 @@
+en
+conf t
+no ip domain lookup
+hostname A-R2
+ip domain-name net31.pwr
+
+enable secret ciscoenpass
+line console 0
+password ciscoconpass
+login
+exit
+
+security min-length 10
+username admin secret admin1pass
+
+line vty 0 15
+logging local
+transport input ssh
+exit
+service password-encryption
+banner motd #Nieautoryzowany dostep zabroniony#
+
+int g0/0/0
+ip add 209.165.200.231 255.255.255.0
+no shutdown
+
+int s0/1/0
+ip add 10.21.1.2 255.255.255.252
+no shutdown
+
+interface s0/1/1
+ip add 10.21.1.6 255.255.255.252
+clock rate 2000000
+no shutdown
+
+crypto key generate rsa general-keys modulus 1024
+
+router ospf 1
+router-id 223.21.1.2
+network 10.21.1.2 0.0.0.3 area 0
+
+passive-interface g0/0/0
+auto-cost reference-bandwidth 1000
+exit
+
+interface s0/1/1
+ip ospf hello-interval 30
+interface s0/1/0
+ip ospf hello-interval 30
+exit
+
+ip route 0.0.0.0 0.0.0.0 209.165.200.254
+
+router ospf 1
+default-information originate
+
+ip access-list extended R2-SECURITY 
+deny tcp any host 209.165.200.238 eq 443
+deny tcp any host 209.165.200.238 eq 80
+deny tcp any host 209.165.200.238 eq 22
+permit ip any any
+exit
+
+interface s0/1/1
+ip access-group R2-SECURITY in
+interface s0/1/0
+ip access-group R2-SECURITY in 
+exit 
+
+access-list 1 permit 192.192.1.0 0.0.0.255
+
+ip nat inside source list 1 interface s0/1/0
+
+int s0/1/0
+ip nat inside
+int s0/1/1
+ip nat inside
+int g0/0/0
+ip nat outside
