@@ -28,6 +28,7 @@ crypto key generate rsa general-keys modulus 1024
 int vlan 1
 ip address 172.21.1.2 255.255.255.0
 description Management
+no shutdown
 exit 
 
 ip default-gateway 172.21.1.1
