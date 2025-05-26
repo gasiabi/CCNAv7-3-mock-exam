@@ -40,14 +40,14 @@ network 10.21.1.8 0.0.0.3 area 0
 network 172.21.101.0 0.0.0.255 area 0
 network 10.21.1.0 0.0.0.3 area 0
 
-passive-interface g0/0/0
+passive-interface g0/0
 auto-cost reference-bandwidth 1000
 
 exit
 
 interface s0/1/1
 ip ospf hello-interval 30
-interface g0/0/1
+interface g0/1
 ip ospf hello-interval 30
 exit
 
