@@ -28,7 +28,7 @@ int g0/0
 ip add 172.21.101.1 255.255.255.0
 no shutdown
 
-int s0/1/0
+int s0/1/1
 ip add 10.21.1.5 255.255.255.252
 no shutdown
 
