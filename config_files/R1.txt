@@ -46,7 +46,7 @@ auto-cost reference-bandwidth 1000
 
 exit
 
-interface g0/0/1
+interface g0/1
 ip ospf hello-interval 30
 interface s0/1/0
 ip ospf hello-interval 30
