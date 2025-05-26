@@ -9,7 +9,7 @@ line console 0
 password ciscoconpass
 login
 
-interface range f0/1-17,f0/19,f0/21-24,g0/0-1
+interface range f0/1-17,f0/19,f0/21-24,g0/1-2
 shutdown
 exit
 
@@ -28,6 +28,7 @@ crypto key generate rsa general-keys modulus 1024
 int vlan 1
 ip address 172.21.101.2 255.255.255.0
 description Management
+no shutdown
 exit 
 
 ip default-gateway 172.21.101.1
