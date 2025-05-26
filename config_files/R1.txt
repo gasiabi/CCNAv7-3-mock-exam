@@ -20,11 +20,11 @@ exit
 service password-encryption
 banner motd #Nieautoryzowany dostep zabroniony#
 
-interface g0/0/1
+interface g0/1
 ip add 10.21.1.9 255.255.255.252
 no shutdown
 
-int g0/0/0
+int g0/0
 ip add 172.21.1.1 255.255.255.0
 no shutdown
 
